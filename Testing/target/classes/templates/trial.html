@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Define styles for the sidebar */
+        .sidebar {
+            height: 100%;
+            width: 20%; /* Set the sidebar width to 20% */
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333;
+            padding-top: 20px;
+            overflow-y: scroll; /* Allow scrolling in the sidebar */
+        }
+
+        /* Style the sidebar links */
+        .sidebar a {
+            padding: 10px 25px; /* Reduced padding for smaller links */
+            text-decoration: none;
+            font-size: 16px; /* Reduced font size for smaller links */
+            color: white;
+            display: block;
+        }
+
+        /* Add margin between the cards and sidebar */
+        .sidebar .card {
+            margin-bottom: 10px;
+        }
+
+        /* Change the link color on hover */
+        .sidebar a:hover {
+            background-color: #555;
+        }
+
+        /* Define styles for the content area */
+        .content {
+            margin-left: 20%; /* Match the sidebar width */
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <!-- Add your 50 cards manually here -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <!-- Card content here -->
+            <h5 class="card-title">Card Title</h5>
+            <a class="btn btn-primary btn-sm">View Details</a> <!-- Smaller button -->
+        </div>
+    </div>
+
+    <!-- Repeat this card structure for each of your 50 cards -->
+</div>
+<div class="content">
+    <section id="section1">
+        <h2>Section 1</h2>
+        <p>This is the content for Section 1.</p>
+    </section>
+
+    <section id="section2">
+        <h2>Section 2</h2>
+        <p>This is the content for Section 2.</p>
+    </section>
+
+    <!-- Add more sections as needed -->
+</div>
+
+<!-- Bootstrap and jQuery scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

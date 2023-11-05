@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="base::Layout(~{::body})">
+<head>
+    <meta charset="UTF-8">
+    <title>404 Page</title>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron mt-5" width="80%"  height="auto" style="border-radius:0px 50px 0px 50px; background-color: rgba(255,255,255,0.55)">
+        <h1 class="text-center" style="font-family: 'DM Serif Display', serif; font-size:72px; color:#000">Page not found!</h1>
+
+        <p style="" class="text-center">Click the buttons below to learn more about us or view all companies or search for current job openings.</p>
+        <div class="text-center">
+            <a th:href="@{/}"><button class="btn btn-lg btn-primary" style="background-color: #07689F; border-color: #07689F;">Visit Homepage</button></a>
+            <a class="btn btn-primary btn-lg" href="/about" role="button" >About Us</a>
+            <a class="btn btn-success btn-lg" href="/companies" role="button" >View All Companies</a>
+            <a class="btn btn-danger btn-lg" href="/jobs" role="button" >Current Job Opening!</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" th:fragment="Layout(content)">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body style="background-image: url('https://i.ibb.co/nwCrfV8/background.jpg'); background-size:cover; opacity:0.9">
+
+<nav class="navbar navbar-expand-lg navbar-light" >
+
+    <a th:href="@{/}"><img class="navbar-brand" src="https://i.ibb.co/ns0Gn0X/LOGOGOGO-removebg-preview-2-1.png" alt="DataSphere Innovations Logo" width="50"></a>
+    <a class="navbar-brand" th:href="@{/}" style="color:#07689F;font-weight:bold;font-family: Arial, Helvetica, sans-serif">DataSphere</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav" >
+        <ul class="navbar-nav" style="color:black;">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}" th:text="Home" style="color: #333;"></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/about}" th:text="About" style="color: #333;"></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/companies}" th:text="Companies" style="color: #333;"></a>
+            </li>
+<!--            <th:block th:if="${user==null}"></th:block>-->
+            <li class="nav-item" th:unless="${#authorization.expression('isAuthenticated()')}">
+                <a class="nav-link" th:href="@{/login}" th:text="Login" style="color: #333;"></a>
+            </li>
+            <li class="nav-item" th:unless="${#authorization.expression('isAuthenticated()')}">
+                <a class="nav-link" th:href="@{/register}" th:text="Register" style="color: #333;"></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/jobs}" th:text="Jobs" style="color: #333;"></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/profile}" th:text="Profile" style="color: #333;"></a>
+            </li>
+
+            <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                <a class="nav-link" th:href="@{/logout}" th:text="Logout" style="color: #333;"></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!--Main Content End-->
+<div class="mainContent">
+    <div class="section2" th:replace="${content}"></div>
+</div>
+<!--Main Content End-->
+<!-- Add Bootstrap and Thymeleaf JS scripts here (ensure you have these dependencies) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

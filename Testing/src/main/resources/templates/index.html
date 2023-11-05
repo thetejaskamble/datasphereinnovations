@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="base::Layout(~{::body})">
+<head>
+    <meta set="UTF-8">
+    <title>Welcome to DataSphere Innovations</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="jumbotron mt-5" width="80%"  height="auto" style="border-radius:0px 50px 0px 50px; background-color: rgba(255,255,255,0.55)">
+        <h1 class="text-center" style="font-family: 'DM Serif Display', serif; font-size:72px; color:#000">Welcome to DataSphere Innovations!</h1>
+        <p class="lead mt-5" style="font-weight:500;">DataSphere Innovations is a website
+            that offers a comprehensive database of all the
+            multinational corporations (MNCs) in the information
+            technology (IT) industry. Whether you are a job seeker,
+            an investor, or a curious learner, you can find all the
+            information you need about the IT MNCs on our website.</p>
+        <hr class="my-4">
+
+        <p style="">Click the buttons below to learn more about us or view all companies or search for current job openings.</p>
+        <div class="text-center">
+        <a class="btn btn-primary btn-lg" href="/about" role="button" >About Us</a>
+        <a class="btn btn-success btn-lg" href="/companies" role="button" >View All Companies</a>
+            <a class="btn btn-danger btn-lg" href="/jobs" role="button" >Current Job Opening!</a>
+        </div>
+    </div>
+</div>
+<div class="mt-5"> </div>
+<div class="mt-5"> </div>
+</body>
+</html>

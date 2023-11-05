@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::body})">
+<head>
+    <title>Add Job</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Add Job</h1>
+    <form th:action="@{/jobs/add}" th:object="${job}" method="post">
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select class="form-control" id="role" th:field="*{role}">
+                <option value="Developer">Developer</option>
+                <option value="Analyst">Analyst</option>
+                <option value="Manager">Manager</option>
+                <option value="Vice President">Vice President</option>
+                <option value="Assistant Vice President">Assistant Vice President</option>
+                <option value="Assitant Manager">Assitant Manager</option>
+                <option value="CEO">CEO</option>
+                <option value="CTO">CTO</option>
+                <option value="Intern">Intern</option>
+                <option value="Tester">Tester</option>
+                <!-- Add more industry options as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="industry">Industry:</label>
+            <select class="form-control" id="industry" th:field="*{industry}">
+                <option value="Technology">Technology</option>
+                <option value="Finance">Finance</option>
+                <option value="Healthcare">Healthcare</option>
+                <!-- Add more industry options as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="companyName">Company Name:</label>
+            <input type="text" class="form-control" id="companyName" th:field="*{companyName}" />
+        </div>
+        <div class="form-group">
+            <label for="ticker">Ticker:</label>
+            <input type="text" class="form-control" id="ticker" th:field="*{ticker}" />
+        </div>
+        <div class="form-group">
+            <label for="location" id="">Country:</label>
+            <select class="form-control" id="location" th:field="*{location}">
+                <option value="USA">USA</option>
+                <option value="India">India</option>
+                <option value="Japan">Japan</option>
+                <option value="UnitedKingdom">United Kingdom</option>
+                <option value="Australia">Australia</option>
+                <!-- Add more country options as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="city">City:</label>
+            <select class="form-control" id="city" th:field="*{city}">
+                <!-- Add city options based on the selected country using JavaScript -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="salary">Salary:</label>
+            <input type="number" class="form-control" id="salary" th:field="*{salary}" />
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea class="form-control" id="description" rows="5" th:field="*{description}"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<!-- Include Bootstrap JS -->
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+<script>
+    const locationSelect = document.getElementById('location');
+        const citySelect = document.getElementById('city');
+
+        // Define city options for each location
+        const cityOptions = {
+            USA: ['New York City', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+            India: ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Ahmedabad'],
+            Japan: ['Tokyo', 'Yokohama', 'Osaka', 'Nagoya', 'Sapporo'],
+            UnitedKingdom: ['London', 'Manchester', 'Birmingham', 'Glasgow', 'Liverpool'],
+            Australia: ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide'],
+            // Add more city options for other locations
+        };
+
+        // Function to update city options based on the selected location
+        function updateCityOptions() {
+            const selectedLocation = locationSelect.value;
+            const cities = cityOptions[selectedLocation] || [];
+
+            // Clear previous city options
+            citySelect.innerHTML = '';
+
+            // Add new city options
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.text = city;
+                citySelect.appendChild(option);
+            });
+        }
+
+        // Add an event listener to update city options when the location changes
+        locationSelect.addEventListener('change', updateCityOptions);
+
+
+
+        // Initially update city options based on the default selected location
+        updateCityOptions();
+</script>
+
+</body>
+</html>

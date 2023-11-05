@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="base::Layout(~{::body})">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Page</title>
+    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css}">
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mt-5">
+                <div class="card" style="background-color: rgba(255,255,255,0.4);">
+                <div class="card-header text-center" style="background-color:#07689F;">
+                    <svg fill="#fff"  width="220px" height="220px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" stroke="#fff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M16 15.503A5.041 5.041 0 1 0 16 5.42a5.041 5.041 0 0 0 0 10.083zm0 2.215c-6.703 0-11 3.699-11 5.5v3.363h22v-3.363c0-2.178-4.068-5.5-11-5.5z"></path></g></svg>
+                    <h3 class="text-center" style="color:white;font-family: 'DM Serif Display', serif; font-size:36px;">Hello, [[${user.name}]]!</h3>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/logout}" method="post">
+                        <p style="font-family: 'DM Serif Display', serif; font-size:25px;">Email: <span style="color:#07689F;">[[${user.email}]]</span></p>
+                        <p style="font-family: 'DM Serif Display', serif; font-size:25px;">Role: <span style="color:#07689F;">[[${user.role}]]</span></p>
+                        <p style="font-family: 'DM Serif Display', serif; font-size:25px;">Reference ID: <span style="color:#07689F;">[[${user.id}]]</span></p>
+                        <button type="submit" class="btn btn-primary btn-block" style="background-color: #07689F; border-color: #07689F;">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{https://code.jquery.com/jquery-3.5.1.slim.min.js}"></script>
+<script th:src="@{https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js}"></script>
+<script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

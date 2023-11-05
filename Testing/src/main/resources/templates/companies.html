@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="base::Layout(~{::body})">
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add some CSS to make the background light blue -->
+    <style>
+        body {
+            background-color: #e0e0ff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-3">
+    <form th:action="@{/companies/search}" method="post" class="form-inline my-2 my-lg-0" >
+        <input class="form-control mr-sm-2" type="text" th:name="companyName" placeholder="Search by name" aria-label="Search" style="background:rgba(255, 255, 255, 0.7); color:black;">
+        <button class="btn my-2 my-sm-0" type="submit" style="color:white; background-color: #07689F; border-color: #07689F;">Search</button>
+    </form>
+
+    <div class="row mt-3">
+        <!-- Assuming 'companies' is a list of company objects -->
+        <!-- Loop through each company -->
+        <div th:each="company : ${companies}" class="col-sm-4">
+            <div class="card car border-2 mb-3" id="car" style="background-color: rgba(255,255,255,0.7); color: #000000;">
+                <div class="card-body">
+                    <!--<img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" class="card-img-top" alt="Company Image" width="50">-->
+                    <div style="display:flex;justify-content:space-between">
+                        <h5 class="card-title" th:text="${company.ticker}" style="font-family: Arial, sans-serif; font-weight: bold;"></h5>
+                        <h5 class="percentage" style="font-family: Arial, sans-serif; font-weight: bold;"></h5>
+                    </div>
+                    <h6 th:text="${company.companyName}"></h6>
+                    <!-- Redirect to company details page -->
+                    <a th:href="@{/company/{id}(id=${company.companyId})}" class="btn btn-primary" style="background-color: #07689F; border-color: #07689F; color: #ffffff;">View Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="http://localhost:8080/company.js"></script>
+<script>
+    // Get all cards with class 'card'
+    var cards = document.querySelectorAll('.card');
+
+    cards.forEach(function(card) {
+        var tickerElement = card.querySelector('.card-title');
+        var percentageElement = card.querySelector('.percentage');
+        var ticker = tickerElement.textContent; // Get the ticker value
+
+        fetchStockData(ticker, tickerElement, percentageElement, card);
+    });
+
+    function fetchStockData(ticker, tickerElement, percentageElement, card) {
+        var xmlhttp = new XMLHttpRequest();
+        var url = `https://api.twelvedata.com/time_series?symbol=${ticker}&interval=1month&outputsize=24&apikey=f7c4c1da4acb4b6f8d819d5efe953168`;
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var data = JSON.parse(this.responseText);
+
+                datetimeValues = data.values.map(item => item.datetime);
+                closingPrice = data.values.map(item => item.close);
+
+                console.log(datetimeValues);
+
+                firstTime = [data.values[0].close, data.values[11].close];
+                var growthPercentage = ((firstTime[0]*100)/firstTime[1]) - 100;
+                percentage = growthPercentage.toFixed(2) + "%";
+                percentageElement.textContent = percentage;
+                console.log(percentage);
+
+                <!--Old-->
+
+                percentageElement.textContent = percentage;
+
+                var num = parseFloat(percentage.replace("%", ""));
+                console.log(num);
+
+
+                    coloredIt(num, card);
+
+                console.log(ticker);
+            }
+        }
+    }
+
+    function coloredIt(num, card){
+                if (num < 0) {
+                    card.classList.remove("bg-success");
+                    card.classList.add("bg-danger");
+                    } else {
+                    card.classList.remove("bg-danger");
+                    card.classList.add("bg-success");
+                }
+    }
+</script>
+</body>
+</html>
+

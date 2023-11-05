@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="base::Layout(~{::body})">
+<head>
+    <title>Jobs</title>
+    <link th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+
+    <!-- Search form -->
+    <form th:action="@{/jobs}" method="get">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" name="search" placeholder="What type of role do you want?">
+            <button class="btn btn-primary" type="submit" style="background-color: #07689F; border-color: #07689F;">Search</button>
+        </div>
+    </form>
+
+    <!-- Filter form -->
+    <form th:action="@{/jobs}" method="get" id="cityForm">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <select class="form-control" name="role">
+                    <!-- Add options for different roles -->
+                    <option value="Developer">Developer</option>
+                    <option value="Analyst">Analyst</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Vice President">Vice President</option>
+                    <option value="Assistant Vice President">Assistant Vice President</option>
+                    <option value="Assitant Manager">Assitant Manager</option>
+                    <option value="CEO">CEO</option>
+                    <option value="CTO">CTO</option>
+                    <option value="Intern">Intern</option>
+                    <option value="Tester">Tester</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <select class="form-control" id="locationSelect" name="location">
+                    <!-- Add options for different locations -->
+                    <option value="USA">USA</option>
+                    <option value="India">India</option>
+                    <option value="Japan">Japan</option>
+                    <option value="UnitedKingdom">United Kingdom</option>
+                    <option value="Australia">Australia</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <select class="form-control" id="citySelect" name="city">
+                    <!-- Add options for different locations -->
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <select class="form-control" name="industry">
+                    <!-- Add options for different locations -->
+                    <option value="Technology">Technology</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Healthcare">Healthcare</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <button class="btn btn-primary" type="submit" style="background-color: #07689F; border-color: #07689F;">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Sort form -->
+    <form th:action="@{/jobs}" method="get">
+        <div class="form-row">
+            <div class="form-group col-md-8">
+                <select class="form-control" name="sort">
+                    <!-- Add options for different sort criteria -->
+                    <option value="role">Role</option>
+                    <option value="location">Location</option>
+                    <option value="companyName">Company Name</option>
+                    <option value="industry">Industry</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <button class="btn btn-primary" type="submit" style="background-color: #07689F; border-color: #07689F;">Sort</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Jobs table -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Role</th>
+            <th>Industry</th>
+            <th>Company Name</th>
+            <th>Country</th>
+            <th>City</th>
+            <th></th>
+            <!-- Add more columns as needed -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="job : ${jobs}">
+            <td th:text="${job.role}"></td>
+            <td th:text="${job.industry}"></td>
+            <td th:text="${job.companyName}"></td>
+            <td th:text="${job.location}"></td>
+            <td th:text="${job.city}"></td>
+            <td><a th:href="@{/job/{id}(id=${job.id})}" class="btn btn-success" style="background-color: #07689F; border-color: #07689F;">View Job Details</a></td>
+            <!-- Add more data as needed -->
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}"></script>
+
+<script>
+    const locationSelect = document.getElementById('locationSelect');
+        const citySelect = document.getElementById('citySelect');
+        const cityForm = document.getElementById('cityForm');
+
+        // Define city options for each location
+        const cityOptions = {
+            USA: ['New York City', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+            India: ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Ahmedabad'],
+            Japan: ['Tokyo', 'Yokohama', 'Osaka', 'Nagoya', 'Sapporo'],
+            UnitedKingdom: ['London', 'Manchester', 'Birmingham', 'Glasgow', 'Liverpool'],
+            Australia: ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide'],
+            // Add more city options for other locations
+        };
+
+        // Function to update city options based on the selected location
+        function updateCityOptions() {
+            const selectedLocation = locationSelect.value;
+            const cities = cityOptions[selectedLocation] || [];
+
+            // Clear previous city options
+            citySelect.innerHTML = '';
+
+            // Add new city options
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.text = city;
+                citySelect.appendChild(option);
+            });
+        }
+
+        // Add an event listener to update city options when the location changes
+        locationSelect.addEventListener('change', updateCityOptions);
+
+
+
+        // Initially update city options based on the default selected location
+        updateCityOptions();
+</script>
+</body>
+</html>

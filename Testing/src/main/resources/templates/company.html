@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="base::Layout(~{::body})">
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-3">
+    <a class="btn btn-primary" role="button" th:href="@{/companies}" style="background-color:#07689F;border-color:#07689F">Go Back</a>
+    <div class="jumbotron mt-3" style="background-color:white; border-radius:50px 0px 50px 0px;">
+
+        <div style="display:flex;justify-content:space-between">
+            <h1 class="display-4" th:text="${company.ticker}" id="companyTicker" style="font-family: 'DM Serif Display', serif;color:#07689F;"></h1>
+            <h2 class="" style="font-family: Arial, sans-serif; font-weight: bold;" id="percentage"><span id="percent"></span></h2>
+        </div>
+        <div style="display:flex;justify-content:space-between">
+        <p class="lead">Company ID: <span th:text="${company.companyId}" id="companyId"></span></p>
+        <h2 class="" style="font-family: Arial, sans-serif; font-weight: bold; color:#07689F" id=""><span id="currentPrice"></span></h2>
+        </div>
+<!--        <p>Percentage: <span id="percent"></span></p>-->
+    </div>
+    <canvas id="myChart"></canvas>
+</div>
+
+<div class="container mt-5 py-5 px-5 bg-primary text-white" style="border-radius:0px 50px 0px 50px;">
+    <h2><span id="companyName" style="font-family: 'DM Serif Display', serif; font-size:52px;"></span></h2>
+    <p>Company Industry: <span id="companyIndustry"></span></p>
+    <p>Company Sector: <span id="companySector"></span></p>
+    <p>Company Description: <span id="companyDescription"></span></p>
+</div>
+
+<div class="container mt-5 md-5 py-5 px-5 bg-danger text-white" style="border-radius:50px 0px 50px 0px;">
+    <h2>Company Stock Market Details</h2>
+    <p>Company Market Capitalization: <span id="marketCap"></span></p>
+    <p>Company 52 Weeks High: <span id="high52"></span></p>
+    <p>Company 52 Weeks Low: <span id="low52"></span></p>
+    <p>Company Profit Margin: <span id="profitMargin"></span></p>
+    <p>Company Revenue per Share of 12 Months: <span id="revenuePerShareTTM"></span></p>
+</div>
+
+<div class="mt-5"> </div>
+
+<!-- Include Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="http://localhost:8080/company.js"></script>
+
+<!--FIRST API SCRIPT START-->
+
+<script>
+    var one = document.getElementById("companyTicker");
+    var two = one.textContent;
+    console.log(two)
+    var xmlhttp = new XMLHttpRequest();
+    var url = `https://api.twelvedata.com/time_series?symbol=${two}&interval=1month&outputsize=60&apikey=f7c4c1da4acb4b6f8d819d5efe953168`;
+    xmlhttp.open("GET",url,true);
+    xmlhttp.send();
+
+    xmlhttp.onreadystatechange = function(){
+    if(this.readyState == 4 && this.status == 200){
+    var data = JSON.parse(this.responseText);
+
+    const datetimeValues = data.values.map(item => item.datetime);
+    const closingPrice = data.values.map(item => item.close);
+
+    console.log(data.values[0].datetime);
+    console.log(data.values[0].close);
+    console.log(data.values[11].datetime);
+    console.log(data.values[11].close);
+
+    const firstTime = [data.values[0].close, data.values[11].close];
+    var growthPercentage = ((firstTime[0]*100)/firstTime[1]) - 100;
+    console.log(growthPercentage);
+    var roundedGrowthPercentage = growthPercentage.toFixed(2);
+
+    document.getElementById("percent").innerHTML = roundedGrowthPercentage + '%';
+
+    card = document.querySelector('#percent');
+
+    if (roundedGrowthPercentage < 0) {
+                    card.classList.remove("text-success");
+                    card.classList.add("text-danger");
+                    } else {
+                    card.classList.remove("text-danger");
+                    card.classList.add("text-success");
+                    }
+
+    reverseDate = datetimeValues.reverse();
+    reverseClosingPrice = closingPrice.reverse();
+
+    const ctx = document.getElementById('myChart');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: reverseDate,
+        datasets: [{
+          label: 'Monthly Closing Price',
+          data: reverseClosingPrice,
+          backgroundColor:"#07689F",
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+    }
+    }
+
+</script>
+
+<!--SECOND API SCRIPT START-->
+<script>
+    var one = document.getElementById("companyTicker");
+var two = one.textContent;
+var xmlOneHttp = new XMLHttpRequest();
+var infoUrl = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${two}&apikey=${apikey}`;
+xmlOneHttp.open("GET",infoUrl,true);
+xmlOneHttp.send();
+
+xmlOneHttp.onreadystatechange = function(){
+if(this.readyState == 4 && this.status == 200){
+var infoData = JSON.parse(this.responseText);
+<!--console.log(infoData);-->
+
+var symbol = infoData["symbol"];
+var name = infoData["Name"];
+var description = infoData["Description"];
+var high52 = infoData["52WeekHigh"];
+var low52 = infoData["52WeekLow"];
+var sector = infoData["Sector"];
+var industry = infoData["Industry"];
+var profitMargin = infoData["ProfitMargin"];
+var revenuePerShareTTM = infoData["RevenuePerShareTTM"];
+var marketCapitalization = infoData["MarketCapitalization"];
+
+    document.getElementById("companyName").innerHTML = name;
+    document.getElementById("companyDescription").innerHTML = description;
+    document.getElementById("high52").innerHTML = high52;
+    document.getElementById("low52").innerHTML = low52;
+    document.getElementById("companySector").innerHTML = sector;
+    document.getElementById("companyIndustry").innerHTML = industry;
+    document.getElementById("profitMargin").innerHTML = profitMargin;
+    document.getElementById("revenuePerShareTTM").innerHTML = revenuePerShareTTM;
+    document.getElementById("marketCap").innerHTML = marketCapitalization;
+}
+}
+</script>
+<!-- SECOND API SCRIPT END-->
+
+<!--THIRD API SCRIPT START-->
+
+<script>
+    var elone = document.getElementById("companyTicker");
+var eltwo = elone.textContent;
+var elxmlOneHttp = new XMLHttpRequest();
+var elinfoUrl = `https://api.twelvedata.com/price?symbol=${eltwo}&apikey=f7c4c1da4acb4b6f8d819d5efe953168`;
+elxmlOneHttp.open("GET",elinfoUrl,true);
+elxmlOneHttp.send();
+
+elxmlOneHttp.onreadystatechange = function(){
+if(this.readyState == 4 && this.status == 200){
+var elinfoUrl = JSON.parse(this.responseText);
+
+var livePrice = elinfoUrl.price;
+
+document.getElementById("currentPrice").innerHTML = livePrice;
+
+console.log(livePrice);
+
+}
+}
+</script>
+
+<!--THIRD API SCRIPT END-->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+
+</body>
+</html>
